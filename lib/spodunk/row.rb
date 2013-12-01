@@ -1,4 +1,3 @@
-require 'active_support/all'
 require 'hashie'
 
 module Spodunk
@@ -72,12 +71,13 @@ module Spodunk
       end
     end
 
-    # a method that converts integer vals to proper keys
+    # a method that converts integer vals or Strings to proper 
+    # slugified keys
     def mash_key(idx)
       if idx.is_a?(Fixnum)
         return keys[idx]
       else
-        return idx.to_s
+        return idx.to_s.slugify
       end
     end
 

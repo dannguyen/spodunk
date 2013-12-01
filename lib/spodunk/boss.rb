@@ -1,6 +1,5 @@
 require 'google_drive'
 
-
 module Spodunk
   class Boss
     attr_reader :session, :spreadsheet

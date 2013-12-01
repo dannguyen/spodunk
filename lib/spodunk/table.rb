@@ -8,7 +8,9 @@ module Spodunk
     def initialize(arr, opts={})
       rs = arr.dup
       @headers = rs.shift
-      @rows = rs.map{ |r| Row.new(r, @headers)}
+      @slug_headers = @headers.map{|h| h.slugify}
+      # rows get attributes as slugs
+      @rows = rs.map{ |r| Row.new(r, @slug_headers)}
 
       @title = opts[:title]
     end
@@ -20,6 +22,11 @@ module Spodunk
 
     def num_cols
       @headers.count
+    end
+
+
+    def valid?
+      @slug_headers.uniq.count == num_cols
     end
 
     def clean_rows
@@ -73,8 +80,8 @@ module Spodunk
 
 
     class << self
-      def create_from_gdoc(gsheet)
-        self.new(gsheet.rows)
+      def create_from_gdoc(gsheet, opts={})
+        self.new(gsheet.rows, opts)
       end
     end
 

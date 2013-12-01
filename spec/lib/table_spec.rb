@@ -21,6 +21,14 @@ describe Spodunk::Table do
       end
     end
 
+    describe 'helpers' do
+      it 'should have basic counts' do
+        expect(@table.num_rows).to eq 1
+        expect(@table.num_cols).to eq 3
+      end
+
+    end
+
     describe '@headers' do
       it 'should by default be first row' do
         expect(@table.headers).to eq rows.first
@@ -40,8 +48,23 @@ describe Spodunk::Table do
 
 
   describe 'validation' do
-    it 'should not allow headers with same sluggable name'
-    
+    it 'should be valid? if all headers are sluggibly unique' do
+      table = Table.new([
+        ['hey you', 'hey- there'],
+        [1,2]
+      ])
+
+      expect(table).to be_valid
+    end
+
+    it 'should not allow headers with same sluggable name' do
+      table = Table.new([
+        ['hey you', 'hey-you   '],
+        [1,2]
+      ])
+
+      expect(table).not_to be_valid
+    end    
   end
 
   describe 'configuration' do
