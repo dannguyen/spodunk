@@ -35,6 +35,10 @@ module Spodunk
         end
       end
 
+      def table(tid)
+        tables(tid)
+      end
+
       def save_row(table_id, row)
         pt = tables(table_id)
         row_idx = pt.real_row_index(row)

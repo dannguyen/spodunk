@@ -55,6 +55,24 @@ module Spodunk
       @mash[mash_key(key)] = val
     end
 
+    def method_missing(foo, *args, &blk)
+      foop = foo.to_s.match(/\w+(?==)?/).to_s
+      if @mash.keys.include?(foop)
+        @mash.send(foo, *args)
+      else
+        super
+      end
+    end
+
+    def respond_to?(foo, inc_private=false)
+      foop = foo.to_s.match(/\w+(?=$|=)/).to_s
+      if @mash.keys.include?(foop)
+        true
+      else
+        super
+      end
+    end
+
 
     def attributes
       @mash.stringify_keys

@@ -23,6 +23,18 @@ describe "Spodunk::Row" do
       expect(@row.keys).to eq headers.map{|h| h.slugify}
     end
 
+    it 'should have method_missing apply to slugified headers' do
+      expect(@row.blue_kiwi).to eq 'none'
+      expect(@row.respond_to?(:oranges)).to be_true
+    end
+
+    it 'should have method_missing apply to slugified headers with assignment' do
+      @row.blue_kiwi = 'some'
+      expect(@row.blue_kiwi).to eq 'some'
+      expect(@row.respond_to?(:oranges=)).to be_true
+    end
+
+
     it 'should have #original_values' do
       expect(@row.original_values).to eq values
     end

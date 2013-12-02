@@ -17,4 +17,6 @@ include Spodunk
 @gd = Connection::GDrive.new(@creds, url: @url)
 @gd.load_table('models')
 
+@rows = @gd.table('models').rows
+
 
