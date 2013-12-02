@@ -8,7 +8,7 @@ source "http://rubygems.org"
 group :development do
   gem "rspec"
   gem "bundler"
-  gem "jeweler"
+  gem "jeweler", "~> 1.8.8"
   gem 'vcr'
   gem 'webmock'
   gem 'dotenv'
