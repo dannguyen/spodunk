@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "spodunk"
-  s.version = "0.1.0"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["dannguyen"]
@@ -29,9 +29,11 @@ Gem::Specification.new do |s|
     "lib/spodunk/connection.rb",
     "lib/spodunk/connections/gdrive.rb",
     "lib/spodunk/row.rb",
+    "lib/spodunk/row_collection.rb",
     "lib/spodunk/table.rb",
     "spec/lib/convenience_spec.rb",
     "spec/lib/row_spec.rb",
+    "spec/lib/spodunkize_spec.rb",
     "spec/lib/table_spec.rb",
     "spec/spec_helper.rb",
     "spodunk.gemspec"
@@ -52,7 +54,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<activesupport>, ["~> 3.2.15"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<bundler>, [">= 0"])
-      s.add_development_dependency(%q<jeweler>, [">= 0"])
+      s.add_development_dependency(%q<jeweler>, ["~> 1.8.8"])
       s.add_development_dependency(%q<vcr>, [">= 0"])
       s.add_development_dependency(%q<webmock>, [">= 0"])
       s.add_development_dependency(%q<dotenv>, [">= 0"])
@@ -63,7 +65,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<activesupport>, ["~> 3.2.15"])
       s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<bundler>, [">= 0"])
-      s.add_dependency(%q<jeweler>, [">= 0"])
+      s.add_dependency(%q<jeweler>, ["~> 1.8.8"])
       s.add_dependency(%q<vcr>, [">= 0"])
       s.add_dependency(%q<webmock>, [">= 0"])
       s.add_dependency(%q<dotenv>, [">= 0"])
@@ -75,7 +77,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<activesupport>, ["~> 3.2.15"])
     s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<bundler>, [">= 0"])
-    s.add_dependency(%q<jeweler>, [">= 0"])
+    s.add_dependency(%q<jeweler>, ["~> 1.8.8"])
     s.add_dependency(%q<vcr>, [">= 0"])
     s.add_dependency(%q<webmock>, [">= 0"])
     s.add_dependency(%q<dotenv>, [">= 0"])
