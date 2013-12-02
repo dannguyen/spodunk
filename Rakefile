@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "spodunk"
   gem.homepage = "http://github.com/dannguyen/spodunk"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{A quickie wrapper to use Google Spreadsheets as a database}
+  gem.description = %Q{Spodunk stands for "spreadsheet" + "podunk"}
   gem.email = "dansonguyen@gmail.com"
   gem.authors = ["dannguyen"]
   # dependencies defined in Gemfile
