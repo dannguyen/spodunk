@@ -3,7 +3,8 @@ require 'active_support/all'
 module Spodunk
   class Table
 
-    attr_reader :headers, :rows, :title
+    attr_reader :headers, :rows, :title, :slug_headers, 
+                :row_offset, :col_offset
 
     def initialize(arr, opts={})
       rs = arr.dup
@@ -13,6 +14,24 @@ module Spodunk
       @rows = rs.map{ |r| Row.new(r, @slug_headers)}
 
       @title = opts[:title]
+
+      # most spreadsheets start counting from 1
+      # and the first row is technically at index-2
+      #  since headers is index-1
+      @row_offset = opts[:row_offset] || 2
+
+      # most spreadsheets begin column counting at 1
+      @col_offset = opts[:col_offset] || 1
+    end
+
+    def real_row_index(row)
+      if row.is_a?(Fixnum)
+        idx = row
+      else
+        idx = @rows.index(row)
+      end
+
+      return idx + @row_offset
     end
 
 
@@ -47,10 +66,10 @@ module Spodunk
 
     # returns with 0-based index and column names as Strings
     def changes(opts={})
-      offset = opts[:offset].to_i
+      row_offset = opts[:row_offset].to_i
 
       dirty_rows.inject({}) do |h, row|
-        idx = @rows.index(row) + offset
+        idx = @rows.index(row) + row_offset
         h[idx] = row.changes(opts)
  
         h
@@ -60,14 +79,14 @@ module Spodunk
     # returns format more specific for Google Worksheets
     # with 1-based index and Hash with column indices rather than
     #  Strings
-    def worksheet_changes
-      changes(offset: 1)
+    def offset_changes
+      changes(col_offset: @col_offset, row_offset: @row_offset)
     end
 
-    # similar to worksheet_changes, except hash contains keys
+    # similar to offset_changes, except hash contains keys
     # of [row, val] Arrays
     def itemized_changes
-      worksheet_changes.inject({}) do |h, (row_num, col_hsh) |
+      offset_changes.inject({}) do |h, (row_num, col_hsh) |
         col_hsh.each_pair do |col_num, val|
           h[[row_num, col_num]] = val
         end
@@ -79,11 +98,7 @@ module Spodunk
   # define unique ID field or concatenation
 
 
-    class << self
-      def create_from_gdoc(gsheet, opts={})
-        self.new(gsheet.rows, opts)
-      end
-    end
+   
 
   end
 end

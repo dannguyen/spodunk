@@ -14,6 +14,7 @@ include Spodunk
 @url = ENV['GDRIVE_TEST_SPREADSHEET_URL']
 @title = ENV['GDRIVE_TEST_WORKSHEET_TITLE']
 
-@boss = Boss.new(@creds, url: @url, title: @title)
+@gd = Connection::GDrive.new(@creds, url: @url)
+@gd.load_table('models')
 
 

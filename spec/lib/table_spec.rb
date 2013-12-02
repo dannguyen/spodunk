@@ -21,12 +21,31 @@ describe Spodunk::Table do
       end
     end
 
-    describe 'helpers' do
+    describe 'rows and indicies' do
       it 'should have basic counts' do
         expect(@table.num_rows).to eq 1
         expect(@table.num_cols).to eq 3
       end
 
+      describe '#real_row_index' do
+        it 'by default has @row_offset of 2' do
+          expect(@table.row_offset).to eq 2
+        end
+    
+        it 'by default has @col_offset of 1' do 
+          expect(@table.col_offset).to eq 1
+        end
+
+        it 'uses @row_offset in real_row_index' do
+          expect(@table.real_row_index(0)).to eq 2
+        end
+
+        it 'can take in a Spodunk::Row as argument' do
+          row = @table.rows.first
+
+          expect(@table.real_row_index(row)).to eq 2
+        end
+      end
     end
 
     describe '@headers' do
@@ -36,7 +55,7 @@ describe Spodunk::Table do
     end
 
     describe '@rows' do
-      it 'should convert all rows to SpreadtableBoss::Row' do
+      it 'should convert all rows to SpreadtableConnection::Row' do
         expect(@table.rows.all?{|r| r.is_a?(Row)})
       end
 
@@ -68,7 +87,7 @@ describe Spodunk::Table do
   end
 
   describe 'configuration' do
-    it 'should have a unique key field'
+
   end
 
   describe 'factory methods' do
@@ -102,15 +121,15 @@ describe Spodunk::Table do
         })
       end
 
-      it '#worksheet_changes should list changes with 1-based index and col numbers' do
-        expect(@table.worksheet_changes).to eq({
-          1 => { 2 => 'changed'}
+      it '#offset_changes should list changes with 1-based index and col numbers' do
+        expect(@table.offset_changes).to eq({
+          2 => { 2 => 'changed'}
         })
       end
 
       it '#itemized_changes should be Hash with [row,col] as keys' do
         expect(@table.itemized_changes).to eq({
-          [1,2] => 'changed'
+          [2,2] => 'changed'
         })
       end
 

@@ -10,20 +10,27 @@ module Spodunk
 
 
     def initialize(vals, headers)
-      @mash = Hashie::Mash.new(Hash[headers.zip(vals)])
+      slugged_headers = headers.map{|h| h.slugify}
+      @mash = Hashie::Mash.new(Hash[slugged_headers.zip(vals)])
       @original = @mash.dup.freeze
       @timestamp = Time.now 
     end
 
 
     def changes(opts={})
-      offset = opts[:offset]
+      offset = opts[:col_offset]
       diff.inject({}) do |h, (k,v)|
         x = offset ? mash_index(k) + offset : k
         h[x] = v.last
  
         h
       end
+    end
+
+    # by default, spreadsheets are assumed to be numbered with columns
+    # starting from 1
+    def itemized_changes
+      changes(col_offset: 1)
     end
 
     # finds difference between @originals and @mash
@@ -39,8 +46,6 @@ module Spodunk
       !clean?
     end
 
-    def fill_values!; end
-
 
     def [](key)
       @mash[mash_key(key)]
@@ -48,6 +53,29 @@ module Spodunk
 
     def []=(key, val)
       @mash[mash_key(key)] = val
+    end
+
+
+    def attributes
+      @mash.stringify_keys
+    end
+
+    def assign_attributes(hsh)
+      new_atts = hsh.inject({}) do |h, (k, v)|
+        if has_attribute?(k)
+          # ignore attributes that aren't part of the model
+          h[mash_key(k)] = v
+        end
+
+        h
+      end
+
+      @mash.merge!( new_atts )
+    end
+
+
+    def has_attribute?(k)
+      attributes.keys.include?(mash_key(k))
     end
 
     private
