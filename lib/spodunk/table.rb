@@ -6,12 +6,16 @@ module Spodunk
     attr_reader :headers, :rows, :title, :slug_headers, 
                 :row_offset, :col_offset
 
+    attr_reader :connection
+
     def initialize(arr, opts={})
+      @connection = opts[:connection]
+
       rs = arr.dup
       @headers = rs.shift
       @slug_headers = @headers.map{|h| h.slugify}
       # rows get attributes as slugs
-      @rows = rs.map{ |r| Row.new(r, @slug_headers)}
+      @rows = RowCollection.new(rs, @slug_headers, self)
 
       @title = opts[:title]
 
@@ -23,6 +27,8 @@ module Spodunk
       # most spreadsheets begin column counting at 1
       @col_offset = opts[:col_offset] || 1
     end
+
+
 
     def real_row_index(row)
       if row.is_a?(Fixnum)
@@ -45,7 +51,7 @@ module Spodunk
 
 
     def valid?
-      @slug_headers.uniq.count == num_cols
+      @slug_headers.uniq.count == num_cols && @slug_headers.all?{|h| !h.empty? }
     end
 
     def clean_rows
@@ -95,10 +101,21 @@ module Spodunk
       end
     end
 
-  # define unique ID field or concatenation
+  # Spodunk stuff!
+
+    # this could be dangerous
+    def save
+      connection.save_table(self)
+    end
 
 
-   
+       # def spodunkize!
+    #   # add meta headers
+    #   add_header('spodunk_gid')
+    #   add_header('spodunk_')    
+    # end
+
+
 
   end
 end

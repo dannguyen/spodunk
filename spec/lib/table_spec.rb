@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Spodunk::Table do
+  let(:connection){ Connection::Base.new}
 
   context 'basic ops' do 
     let(:rows){[ 
@@ -8,7 +9,13 @@ describe Spodunk::Table do
       ['a', 1, "99"]
     ]}
     before do
-      @table = Table.new(rows)
+      @table = Table.new(rows, connection: connection)
+    end
+
+    describe 'binding to Spodunk things' do 
+      it 'should have a @connection' do
+        expect(@table.connection).to be_a Connection::Base
+      end
     end
 
     describe 'initialization by rows' do

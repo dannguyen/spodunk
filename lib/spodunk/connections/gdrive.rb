@@ -49,6 +49,7 @@ module Spodunk
 
       # sets up the table structure
       def init_podunk_table(gsheet, opts={})
+        opts[:connection] = self
         Table.new(gsheet.rows, opts)
       end
 

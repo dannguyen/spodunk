@@ -141,7 +141,21 @@ describe "Spodunk::Row" do
       end
     end
   end
+end
 
 
+describe 'dependencies to Spodunk things' do
+  let(:connection){ Connection::Base.new }
+  let(:table){ Table.new [['a', 'b'], [1, 2]], connection: connection} 
+  before do
+    @row = table.rows.first
+  end
 
+  it 'should have a @table' do
+    expect(@row.table).to be table
+  end
+
+  it 'should have a @connection thru @table' do
+    expect(@row.connection).to be table.connection
+  end
 end

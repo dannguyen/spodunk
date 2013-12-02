@@ -24,13 +24,19 @@ module Spodunk
       def load_spreadsheet(*args);end
 
       def real_tables(tid)
+        if(tid.is_a?(Spodunk::Table))
+          tid = tid.title
+        end
+
         if t = @tables[tid]
           return t[:real]
         end
       end
 
       def tables(tid)
-        if t = @tables[tid]
+        if(tid.is_a?(Spodunk::Table))
+          return tid
+        elsif t = @tables[tid]
           return t[:podunk]
         end
       end

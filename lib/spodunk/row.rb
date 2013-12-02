@@ -2,14 +2,17 @@ require 'hashie'
 
 module Spodunk
   class Row
-    attr_reader :mash, :original, :timestamp
+    attr_reader :mash, :original, :timestamp, :table, :connection
 
     delegate :values, :keys, :to => :mash
     delegate :values, :to => :original, prefix: true
     # expects vals and headers to be 1 to 1
 
+    delegate :connection, :to => :table, allow_nil: true
 
-    def initialize(vals, headers)
+    def initialize(vals, headers, opts={})
+      @table = opts[:table]
+
       slugged_headers = headers.map{|h| h.slugify}
       @mash = Hashie::Mash.new(Hash[slugged_headers.zip(vals)])
       @original = @mash.dup.freeze
@@ -74,6 +77,8 @@ module Spodunk
     end
 
 
+
+
     def attributes
       @mash.stringify_keys
     end
@@ -134,6 +139,16 @@ module Spodunk
         return keys.index(key.to_s)
       end
     end
+
+    
+
+    public
+    # this could be dangerous
+    def save
+      connection.save_row(table, self)
+    end
+
+
 
   end
 end

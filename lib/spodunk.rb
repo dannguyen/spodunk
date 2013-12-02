@@ -6,6 +6,7 @@ end
 
 require 'spodunk/connection'
 require 'spodunk/table'
+require 'spodunk/row_collection'
 require 'spodunk/row'
 
 
